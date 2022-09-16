@@ -4,6 +4,9 @@ export default function handler(lambda) {
   
       try {
         // Run the Lambda
+        console.log("event and context")
+        console.log(JSON.stringify(event, null, 4));
+        console.log(JSON.stringify(context, null, 4));
         body = await lambda(event, context);
         statusCode = 200;
       } catch (e) {
