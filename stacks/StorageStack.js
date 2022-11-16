@@ -1,4 +1,5 @@
 import { Bucket, Table } from "@serverless-stack/resources";
+import { RemovalPolicy } from "aws-cdk-lib";
 
 export function StorageStack({ stack, app }) {
   // Create the DynamoDB table
@@ -10,7 +11,12 @@ export function StorageStack({ stack, app }) {
     primaryIndex: { partitionKey: "userId", sortKey: "noteId" },
   });
 
-  const bucket = new Bucket(stack, "Uploads",  {
+  const bucket = new Bucket(stack, "Uploads", {
+    cdk: {
+      bucket: {
+        removalPolicy: RemovalPolicy.DESTROY,
+      },
+    },
     cors: [
       {
         maxAge: "1 day",
@@ -20,8 +26,9 @@ export function StorageStack({ stack, app }) {
       },
     ],
   });
-  
+
   return {
-    table, bucket
+    table,
+    bucket,
   };
 }
